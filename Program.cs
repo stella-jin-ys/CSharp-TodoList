@@ -12,6 +12,7 @@ public class Program
             int totalTasks = manageTasks.TotalTasks();
             int completedTasks = manageTasks.CompletedTasks();
 
+            Console.ForegroundColor = ConsoleColor.DarkCyan;
             Console.WriteLine("Welcome to ToDo List!");
             Console.WriteLine($"You have {totalTasks} tasks and {completedTasks} tasks are done!");
             Console.WriteLine("Pick an options: ");
@@ -19,8 +20,9 @@ public class Program
             Console.WriteLine("(2) Add New Task");
             Console.WriteLine("(3) Edit Task (update, mark as done, remove)");
             Console.WriteLine("(4) Save and Quit");
+            Console.ResetColor();
 
-            Console.WriteLine("Enter your option: ");
+            Console.Write("Enter your option: ");
             string option = Console.ReadLine();
             switch (option)
             {
@@ -38,7 +40,9 @@ public class Program
                     isRunning = false;
                     break;
                 default:
+                    Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Wrong option. Please select correct option!");
+                    Console.ResetColor();
                     break;
 
             }

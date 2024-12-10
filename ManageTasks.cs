@@ -8,14 +8,17 @@ public class Task : Tasks
 }
 public class ManageTasks
 {
-    List<Task> tasks = new List<Task>();
-    int nextId = 1;
+    private List<Task> tasks = new List<Task>();
+    private int nextId = 1;
     public void AddTasks()
     {
         while (true)
         {
             Console.Write("Enter the title of the task: ");
             string title = Console.ReadLine();
+
+            Console.Write("Enter the project of the task: ");
+            string project = Console.ReadLine();
 
             DateTime dueTime;
             while (true)
@@ -34,14 +37,12 @@ public class ManageTasks
             }
             DateOnly dueDate = DateOnly.FromDateTime(dueTime);
 
-            Console.Write("Please enter the project of the task: ");
-            string project = Console.ReadLine();
-
-            tasks.Add(new Task(nextId++, title, project, dueDate, false));
-
+            tasks.Add(new Task(nextId, title, project, dueDate, false));
+            nextId++;
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("Task added successfully!");
+            Console.WriteLine($"Task{nextId} added successfully!");
             Console.ResetColor();
+
 
             Console.Write("Do you want to add another task? (yes/no): ");
             string response = Console.ReadLine().Trim().ToLower();
@@ -53,37 +54,46 @@ public class ManageTasks
     }
     public void ShowTasks()
     {
-        tasks.OrderBy(task => task.DueDate).ToList();
+        tasks = tasks.OrderBy(task => task.DueDate).ToList();
+        Console.WriteLine("------------------------------------------------------------------------------------------------");
         Console.WriteLine("Task ID".PadRight(10) + "Title".PadRight(20) + "Project".PadRight(30) + "Due Date".PadRight(20) + "Status");
         foreach (var t in tasks)
         {
-            Console.WriteLine(t.Title.PadRight(20) + t.Project.PadRight(20) + t.DueDate.ToString().PadRight(20) + t.Status);
+            Console.WriteLine(t.Id.ToString().PadRight(10) + t.Title.PadRight(20) + t.Project.PadRight(30) + t.DueDate.ToString().PadRight(20) + (t.Status ? "Done" : "Pending"));
         }
+        Console.WriteLine("------------------------------------------------------------------------------------------------");
     }
     public void EditTasks()
     {
-        Console.Write("Select a task ID to edit: ");
-        if (int.TryParse(Console.ReadLine(), out int taskId))
+        TaskEditor taskEditor = new TaskEditor();
+        Console.Write("To update the task, enter edit, done or remove: ");
+        string choice = Console.ReadLine().Trim().ToLower();
+        if (choice == "remove")
         {
-            var task = tasks.Find(task => task.Id == taskId);
-            Console.WriteLine("Enter 'title, project, due date or status' to edit: ");
-            string editInput = Console.ReadLine().Trim().ToLower();
-            if (editInput != "title" || editInput != "project" || editInput != "due date" || editInput != "status")
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Invalid input. Please enter title or project or due date or status");
-                Console.ResetColor();
-            }
-        };
-
+            taskEditor.RemoveTask(tasks);
+        }
+        else if (choice == "edit")
+        {
+            taskEditor.UpdateTask(tasks);
+        }
+        else if (choice == "done")
+        {
+            taskEditor.MarkDone(tasks);
+        }
+        else
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("Invalid input. Enter edit, done or remove.");
+            Console.ResetColor();
+        }
     }
     public int TotalTasks()
     {
-        return 1;
+        return tasks.Count;
     }
     public int CompletedTasks()
     {
-        return 0;
+        return tasks.Count(task => task.Status);
     }
     public void SaveTasks()
     {
