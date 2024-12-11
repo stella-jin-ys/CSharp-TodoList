@@ -5,6 +5,7 @@ public class Program
     public static void Main()
     {
         ManageTasks manageTasks = new ManageTasks();
+        manageTasks.LoadTasks();
         bool isRunning = true;
 
         while (isRunning)
@@ -21,6 +22,7 @@ public class Program
             Console.WriteLine("(3) Edit Task (update, mark as done, remove)");
             Console.WriteLine("(4) Save and Quit");
             Console.ResetColor();
+
 
             Console.Write("Enter your option: ");
             string option = Console.ReadLine();

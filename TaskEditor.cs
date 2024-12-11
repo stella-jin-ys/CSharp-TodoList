@@ -77,56 +77,64 @@ public class TaskEditor
     }
     public void RemoveTask(List<Task> tasks)
     {
-        Console.Write("Enter a task ID: ");
-        if (int.TryParse(Console.ReadLine(), out int taskId))
+        while (true)
         {
-            var task = tasks.Find(task => task.Id == taskId);
-            if (task == null)
+            Console.Write("Enter a task ID: ");
+            if (int.TryParse(Console.ReadLine(), out int taskId))
             {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Task not found.");
-                Console.ResetColor();
+                var task = tasks.Find(task => task.Id == taskId);
+                if (task == null)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Task not found.");
+                    Console.ResetColor();
+                }
+                else
+                {
+                    tasks.Remove(task);
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine($"Task{task.Id} removed successfully!");
+                    Console.ResetColor();
+                }
             }
             else
             {
-                tasks.Remove(task);
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine("Task removed successfully!");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Invalid task ID. Please enter a valid ID");
                 Console.ResetColor();
+                break;
             }
-        }
-        else
-        {
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine("Invalid task ID. Please enter a valid ID");
-            Console.ResetColor();
         }
     }
     public void MarkDone(List<Task> tasks)
     {
-        Console.Write("Enter a task ID: ");
-        if (int.TryParse(Console.ReadLine(), out int taskId))
+        while (true)
         {
-            var task = tasks.Find(task => task.Id == taskId);
-            if (task == null)
+            Console.Write("Enter a task ID: ");
+            if (int.TryParse(Console.ReadLine(), out int taskId))
             {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Task not found.");
-                Console.ResetColor();
+                var task = tasks.Find(task => task.Id == taskId);
+                if (task == null)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Task not found.");
+                    Console.ResetColor();
+                }
+                else
+                {
+                    task.Status = true;
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine($"Task{task.Id} marked as done!");
+                    Console.ResetColor();
+                }
             }
             else
             {
-                task.Status = true;
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine($"{task.Id} marked as done!");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Invalid task ID. Please enter a valid ID");
                 Console.ResetColor();
+                break;
             }
-        }
-        else
-        {
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine("Invalid task ID. Please enter a valid ID");
-            Console.ResetColor();
         }
     }
 }
