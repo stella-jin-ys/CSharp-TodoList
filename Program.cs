@@ -1,6 +1,4 @@
-﻿using System.Net;
-
-public class Program
+﻿public class Program
 {
     public static void Main()
     {
@@ -16,11 +14,11 @@ public class Program
             Console.ForegroundColor = ConsoleColor.DarkCyan;
             Console.WriteLine("Welcome to ToDo List!");
             Console.WriteLine($"You have {totalTasks} tasks and {completedTasks} tasks are done!");
-            Console.WriteLine("Pick an options: ");
+            Console.WriteLine("\nPick an options: ");
             Console.WriteLine("(1) Show Task List (by date or project)");
             Console.WriteLine("(2) Add New Task");
             Console.WriteLine("(3) Edit Task (update, mark as done, remove)");
-            Console.WriteLine("(4) Save and Quit");
+            Console.WriteLine("(4) Save and Quit\n");
             Console.ResetColor();
 
 

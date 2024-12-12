@@ -1,5 +1,3 @@
-using System.Security.Cryptography;
-
 public class Task : Tasks
 {
     public int Id { get; set; }
@@ -79,7 +77,7 @@ public class ManageTasks
             Console.ResetColor();
             nextId++;
 
-            Console.Write("Enter any to continue add more tasks, no to exit: ");
+            Console.Write("Enter any to continue to add more tasks, no to exit: ");
             string response = Console.ReadLine().Trim().ToLower();
             if (response == "no")
             {
@@ -89,7 +87,7 @@ public class ManageTasks
     }
     public void ShowTasks()
     {
-        tasks = tasks.OrderBy(task => task.DueDate).ToList();
+        tasks = tasks.OrderBy(task => task.DueDate).ThenBy(task => task.Project).ToList();
         Console.WriteLine("------------------------------------------------------------------------------------------------");
         Console.ForegroundColor = ConsoleColor.Green;
         Console.WriteLine("Task ID".PadRight(10) + "Title".PadRight(20) + "Project".PadRight(30) + "Due Date".PadRight(20) + "Status");
@@ -141,6 +139,14 @@ public class ManageTasks
     }
     public void SaveTasks()
     {
+        if (!tasks.Any())
+        {
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("Exiting the program.");
+            Console.ResetColor();
+            return;
+        }
+
         FileHandling fileHandling = new FileHandling("tasks.txt");
 
         // serialize each task into a string format

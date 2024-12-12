@@ -95,6 +95,7 @@ public class TaskEditor
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine($"Task{task.Id} removed successfully!");
                     Console.ResetColor();
+                    break;
                 }
             }
             else
@@ -126,6 +127,7 @@ public class TaskEditor
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine($"Task{task.Id} marked as done!");
                     Console.ResetColor();
+                    break;
                 }
             }
             else
