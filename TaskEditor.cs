@@ -2,77 +2,98 @@ public class TaskEditor
 {
     public void UpdateTask(List<Task> tasks)
     {
-        Console.Write("Enter a task ID to update the task: ");
-        if (int.TryParse(Console.ReadLine(), out int taskId))
+        while (true)
         {
-            var task = tasks.Find(task => task.Id == taskId);
-            if (task == null)
+            Console.Write("Enter a task ID to update the task: ");
+            if (int.TryParse(Console.ReadLine(), out int taskId))
             {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Task not found.");
-                Console.ResetColor();
-            }
-            Console.Write("Enter a new title: ");
-            string newTitle = Console.ReadLine();
-            if (!string.IsNullOrWhiteSpace(newTitle))
-            {
-                task.Title = newTitle;
-            }
-
-            Console.Write("Enter a new project: ");
-            string newProject = Console.ReadLine();
-            if (!string.IsNullOrWhiteSpace(newProject))
-            {
-                task.Project = newProject;
-            }
-
-            while (true)
-            {
-                Console.Write("Enter a new due date(MM-DD-YYYY): ");
-                string newDueTime = Console.ReadLine();
-                if (!string.IsNullOrWhiteSpace(newDueTime))
+                var task = tasks.Find(task => task.Id == taskId);
+                if (task != null)
                 {
-                    if (!DateTime.TryParse(newDueTime, out DateTime newTime))
+                    Console.Write("Enter a new title: ");
+                    string newTitle = Console.ReadLine();
+                    if (!string.IsNullOrWhiteSpace(newTitle))
+                    {
+                        task.Title = newTitle;
+                    }
+
+                    Console.Write("Enter a new project: ");
+                    string newProject = Console.ReadLine();
+                    if (!string.IsNullOrWhiteSpace(newProject))
+                    {
+                        task.Project = newProject;
+                    }
+                    string newDueTime;
+                    while (true)
+                    {
+                        Console.Write("Enter a new due date(MM-DD-YYYY): ");
+                        newDueTime = Console.ReadLine();
+                        if (!string.IsNullOrWhiteSpace(newDueTime))
+                        {
+                            if (!DateTime.TryParse(newDueTime, out DateTime newTime))
+                            {
+                                Console.ForegroundColor = ConsoleColor.Red;
+                                Console.WriteLine("Invalid due date format. Please enter a valid date");
+                                Console.ResetColor();
+                            }
+                            else
+                            {
+                                break;
+                            };
+
+                            DateOnly newDueDate = DateOnly.FromDateTime(newTime);
+                            task.DueDate = newDueDate;
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    };
+                    Console.Write("Is the task done? Yes/ No: ");
+                    string newStatus = Console.ReadLine().Trim().ToLower();
+                    if (!string.IsNullOrWhiteSpace(newStatus))
+                    {
+                        if (newStatus == "yes")
+                        {
+                            task.Status = true;
+                        }
+                        else if (newStatus == "no")
+                        {
+                            task.Status = false;
+                        }
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine("Task updated Successfully!");
+                        Console.ResetColor();
+                        break;
+                    }
+                    else if (string.IsNullOrWhiteSpace(newTitle) && string.IsNullOrWhiteSpace(newProject) && string.IsNullOrWhiteSpace(newDueTime) && string.IsNullOrWhiteSpace(newStatus))
                     {
                         Console.ForegroundColor = ConsoleColor.Red;
-                        Console.WriteLine("Invalid due date format. Please enter a valid date");
+                        Console.WriteLine("No update input!");
                         Console.ResetColor();
+                        break;
                     }
                     else
                     {
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine("Task updated Successfully!");
+                        Console.ResetColor();
                         break;
-                    };
-
-                    DateOnly newDueDate = DateOnly.FromDateTime(newTime);
-                    task.DueDate = newDueDate;
+                    }
                 }
                 else
                 {
-                    break;
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Task not found.");
+                    Console.ResetColor();
                 }
-            };
-            Console.Write("Is the task done? Yes/ No: ");
-            string newStatus = Console.ReadLine().Trim().ToLower();
-            if (!string.IsNullOrWhiteSpace(newStatus))
+            }
+            else
             {
-                if (newStatus == "yes")
-                {
-                    task.Status = true;
-                }
-                else if (newStatus == "no")
-                {
-                    task.Status = false;
-                }
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine("Task updated Successfully!");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Invalid task ID. Please enter a valid ID");
                 Console.ResetColor();
             }
-        }
-        else
-        {
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine("Invalid task ID. Please enter a valid ID");
-            Console.ResetColor();
         }
     }
     public void RemoveTask(List<Task> tasks)
